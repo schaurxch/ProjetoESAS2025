@@ -2,6 +2,7 @@ import re
 import streamlit as st
 import pandas as pd
 from services.service_kaggle import load_csv_kaggle
+import plotly.express as px
 
 st.set_page_config(page_title="Dados das Tabelas", layout="wide")
 st.title("Dados das Tabelas :file_folder:")
@@ -167,3 +168,8 @@ st.dataframe(tabela_filtrada[cols_to_show])
 st.markdown(
     f"A tabela possui :blue[{tabela_filtrada.shape[0]}] linhas e :blue[{tabela_filtrada.shape[1]}] colunas."
 )
+
+df = pd.DataFrame(tabela_filtrada)
+fig1 = px.bar(df, df[0],  df[1])
+
+

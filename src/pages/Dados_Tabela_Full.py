@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
+
 
 st.set_page_config(page_title="Dados da Tabela Full", layout="wide")
 
@@ -110,4 +112,9 @@ tabela_full_filtrada = tabela_full_filtrada[colunas]
     
 st.dataframe(tabela_full_filtrada)
 
-st.markdown(f"A tabela possui {tabela_full_filtrada.shape[0]} linhas e {tabela_full_filtrada.shape[1]} colunas.")
+st.markdown(f"A tabela possui :blue[{tabela_full_filtrada.shape[0]}] linhas e :blue[{tabela_full_filtrada.shape[1]}] colunas.")
+
+#vencedor_arena = tabela_full_filtrada.groupby('arena')['mandante'].unique()
+#st.table(vencedor_arena)
+
+

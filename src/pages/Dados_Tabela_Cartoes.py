@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
 st.set_page_config(page_title="Dados da Tabela Cartões", layout="wide")
 
@@ -96,4 +97,31 @@ tabela_cartoes_filtrada = tabela_cartoes.query(query_tabela_cartoes_string)
 tabela_cartoes_filtrada = tabela_cartoes_filtrada[colunas]
 
 st.dataframe(tabela_cartoes_filtrada)
-st.markdown(f"A tabela possui {tabela_cartoes_filtrada.shape[0]} linhas e {tabela_cartoes_filtrada.shape[1]} colunas.")
+st.markdown(f"A tabela possui :blue[{tabela_cartoes_filtrada.shape[0]}] linhas e :blue[{tabela_cartoes_filtrada.shape[1]}] colunas.")
+
+agrupado = tabela_cartoes_filtrada.groupby(["clube", "cartao"]).size().reset_index(name="qtd_cartoes")
+
+barra_cartoes = px.bar(
+    agrupado,
+    x="clube",
+    y="qtd_cartoes",
+    color="cartao",       # separa por tipo
+    barmode="group",      # barras lado a lado
+    title="Cartões por Clube e Tipo",
+)
+
+
+agrupado_pizza = tabela_cartoes_filtrada.groupby(["clube", "cartao"]).size().reset_index(name="qtd_cartoes")
+agrupado_pizza = agrupado_pizza.sort_values("qtd_cartoes", ascending=False)
+agrupado_pizza = agrupado_pizza.head(10)
+
+pizza_cartoes = px.pie(
+    agrupado_pizza,
+    names="clube",
+    values="qtd_cartoes",
+    color='clube',  # cores diferentes por tipo de cartão
+    title="Distribuição de Cartões por Clube e Tipo"
+)
+
+st.plotly_chart(barra_cartoes)
+st.plotly_chart(pizza_cartoes)

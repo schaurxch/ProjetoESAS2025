@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
+
 
 st.set_page_config(page_title="Dados da Tabela Gols", layout="wide")
 
@@ -77,4 +79,34 @@ tabela_gols_filtrada = tabela_gols.query(query_tabela_gols_string)
 tabela_gols_filtrada = tabela_gols_filtrada[colunas]
 
 st.dataframe(tabela_gols_filtrada)
-st.markdown(f"A tabela possui {tabela_gols_filtrada.shape[0]} linhas e {tabela_gols_filtrada.shape[1]} colunas.")
+st.markdown(f"A tabela possui :blue[{tabela_gols_filtrada.shape[0]}] linhas e :blue[{tabela_gols_filtrada.shape[1]}] colunas.")
+
+agrupado_gols = tabela_gols_filtrada.groupby(["clube"]).size().reset_index(name="qtd_gols")
+agrupado_gols = agrupado_gols.sort_values("qtd_gols", ascending=False)
+agrupado_gols = agrupado_gols.head(10)
+
+barra_gols = px.bar(
+    agrupado_gols,
+    x="clube",
+    y="qtd_gols",
+    title="Total de Gols por Clube (Top 10)",
+    labels={"qtd_gols": "Quantidade de Gols", "clube": "Clube"},
+    color="clube"  # opcional
+)
+
+agrupado_atletas = tabela_gols_filtrada.groupby(["atleta"]).size().reset_index(name="qtd_gols_atleta")
+agrupado_atletas = agrupado_atletas.sort_values("qtd_gols_atleta", ascending=False)
+agrupado_atletas = agrupado_atletas.head(10)
+
+barra_atleta = px.bar(
+    agrupado_atletas,
+    x="atleta",
+    y="qtd_gols_atleta",
+    title="Total de Gols por Atleta (Top 10)",
+    labels={"qtd_gols": "Quantidade de Gols", "atleta": "Atleta"},
+    color="atleta"  # opcional
+)
+
+
+st.plotly_chart(barra_gols)
+st.plotly_chart(barra_atleta)
