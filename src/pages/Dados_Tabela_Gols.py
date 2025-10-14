@@ -103,10 +103,16 @@ barra_atleta = px.bar(
     x="atleta",
     y="qtd_gols_atleta",
     title="Total de Gols por Atleta (Top 10)",
-    labels={"qtd_gols": "Quantidade de Gols", "atleta": "Atleta"},
-    color="atleta"  # opcional
+    labels={"qtd_gols_atleta": "Quantidade de Gols", "atleta": "Atleta"},
+    color="atleta" 
 )
 
 
-st.plotly_chart(barra_gols)
-st.plotly_chart(barra_atleta)
+
+col1, col2 = st.columns(2, border=True)
+
+with col1:
+    st.plotly_chart(barra_gols)
+
+with col2:
+    st.plotly_chart(barra_atleta)

@@ -114,7 +114,19 @@ st.dataframe(tabela_full_filtrada)
 
 st.markdown(f"A tabela possui :blue[{tabela_full_filtrada.shape[0]}] linhas e :blue[{tabela_full_filtrada.shape[1]}] colunas.")
 
-#vencedor_arena = tabela_full_filtrada.groupby('arena')['mandante'].unique()
-#st.table(vencedor_arena)
+col1, col2 = st.columns(2, border=True)
 
+df_melt = tabela_full_filtrada.melt(value_vars=["mandante_Placar", "visitante_Placar"], var_name="Tipo", value_name="Gols")
+fig4 = px.box(df_melt, x="Tipo", y="Gols", title="Distribuição de Gols - Mandante vs Visitante", color="Tipo")
+
+
+vitorias_estado = tabela_full_filtrada["mandante_Estado"].value_counts().reset_index()
+vitorias_estado.columns = ["Estado", "Jogos"]
+vitorias_estado_fig = px.pie(vitorias_estado, names="Estado", values="Jogos", title="Distribuição de Jogos por Estado do Mandante")
+
+with col1:
+    st.plotly_chart(fig4)
+
+with col2:
+    st.plotly_chart(vitorias_estado_fig)
 

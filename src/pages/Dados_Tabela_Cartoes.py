@@ -123,5 +123,10 @@ pizza_cartoes = px.pie(
     title="Distribuição de Cartões por Clube e Tipo"
 )
 
-st.plotly_chart(barra_cartoes)
-st.plotly_chart(pizza_cartoes)
+col1, col2 = st.columns(2, border=True)
+
+with col1:
+    st.plotly_chart(barra_cartoes)
+
+with col2:
+    st.plotly_chart(pizza_cartoes)

@@ -12,12 +12,18 @@ st.markdown(
     f'e no [GitHub](https://github.com/adaoduque/Brasileirao_Dataset).'
 )
 
+tabela_gols_path = "campeonato-brasileiro-gols.csv"
+tabela_cartoes_path = "campeonato-brasileiro-cartoes.csv"
+tabela_full_path = "campeonato-brasileiro-full.csv"
+tabela_estatisticas_path = "campeonato-brasileiro-estatisticas_full.csv"
+
+rename_map={"rodata": "rodada"}
 
 # Carregando as tabelas do Kaggle
-tabela_gols = load_csv_kaggle("campeonato-brasileiro-gols.csv", rename_map={"rodata": "rodada"})
-tabela_cartoes = load_csv_kaggle("campeonato-brasileiro-cartoes.csv", rename_map={"rodata": "rodada"})
-tabela_full = load_csv_kaggle("campeonato-brasileiro-full.csv", rename_map={"rodata": "rodada"})
-tabela_estatisticas = load_csv_kaggle("campeonato-brasileiro-estatisticas-full.csv", rename_map={"rodata": "rodada"})
+#tabela_gols = load_csv_kaggle("campeonato-brasileiro-gols.csv", rename_map={"rodata": "rodada"})
+#tabela_cartoes = load_csv_kaggle("campeonato-brasileiro-cartoes.csv", rename_map={"rodata": "rodada"})
+#tabela_full = load_csv_kaggle("campeonato-brasileiro-full.csv", rename_map={"rodata": "rodada"})
+#tabela_estatisticas = load_csv_kaggle("campeonato-brasileiro-estatisticas-full.csv", rename_map={"rodata": "rodada"})
 
 # Seleção da tabela
 st.selectbox(
@@ -29,13 +35,17 @@ if st.session_state["tabela_escolhida"] == "Selecione":
     st.warning("Por favor, selecione uma tabela para visualizar os dados.")
     st.stop()
 elif st.session_state["tabela_escolhida"] == "Tabela de Gols":
+    tabela_gols = load_csv_kaggle(tabela_gols_path, rename_map=rename_map)
     tabela = tabela_gols
 elif st.session_state["tabela_escolhida"] == "Tabela de Cartões":
+    tabela_cartoes = load_csv_kaggle(tabela_cartoes_path, rename_map=rename_map)
     tabela = tabela_cartoes
 elif st.session_state["tabela_escolhida"] == "Tabela Full":
+    tabela_full = load_csv_kaggle(tabela_full_path, rename_map=rename_map)
     tabela = tabela_full
 elif st.session_state["tabela_escolhida"] == "Tabela de Estatísticas":
-    tabela = tabela_estatisticas
+    tabela_stats = load_csv_kaggle(tabela_estatisticas_path, rename_map=rename_map)
+    tabela = tabela_stats
 else:
     tabela = pd.DataFrame()  # fallback seguro
 
